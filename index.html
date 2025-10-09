@@ -21,25 +21,60 @@
         <main>
             <section class="time-machine-section">
                 <div class="time-machine-container">
-                    <img src="assets/time_machine.png" 
-                    alt="Time Machine" class="time-machine-img">
+                    <img src="assets/time_machine.png" alt="Time Machine" class="time-machine-img">
                     <div class="date-picker-container">
                         <h2>When do you want to travel to?</h2>
                         <p>
                             Select a date to see the most popular videos
                             from that time
                         </p>
+                        <div class="date-input-group">
+                            <label for="date-picker">Choose a date :</label>
+                            <input type="date" id="date-picker" min="2005-02-14" max="2025-10-09">
+                            <span class="date-hint">Youtube lanched on Feb 14, 2005</span>
+                        </div>
+                        <button id="generate-btn">
+                            <span class="btn-text">Generate My Time Capsule</span>
+                            <span class="btn-icon">→</span>
+                        </button>
                     </div>
                 </div>
             </section>
-            <section class="results-section">
+            <section class="results-section" id="results-section">
+                <div class="results-header">
+                    <h2 id="results-title">
+                        Popular Videos from
+                        <span id="selected-date-display"></span>
+                    </h2>
+                    <div class="filter-controls">
+                        <button class="filter-btn" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="music">Music</button>
+                        <button class="filter-btn" data-filter="viral">Viral</button>
+                        <button class="filter-btn" data-filter="trailers">Trailers</button>
+                    </div>
+                </div>
 
+                <div class="loading-container" id="loading-container">
+                    <img src="assets/dual-ring.svg" alt="Loading" class="loading-icon">
+                    <p>Traveling back in time...</p>
+                </div>
+
+                <div class="videos-grid" id="videos-grid"></div>
+
+                <div class="no-results" id="no-results">
+                    <p>No videos found this time period. Try another date!</p>
+                </div>
+
+                <button id="back-btn" class="back-btn">
+                    <span class="btn-icon">←</span>
+                    <span class="btn-text">Travel to Another Time</span>
+                </button>
             </section>
         </main>
         <footer>
             <p>2025 NostalgiaTube | Uditha Landekumbura</p>
-            <p class="disclaimer">This app uses the Youtube Data API 
-                V3 to find videos from your selected time 
+            <p class="disclaimer">This app uses the Youtube Data API
+                V3 to find videos from your selected time
                 period.</p>
         </footer>
     </div>
