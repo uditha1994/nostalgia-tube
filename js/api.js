@@ -37,14 +37,50 @@ const YouTubeAPI = {
             }
             return data.items || [];
         } catch (error) {
-            console.error('Error searching videos:',error);
+            console.error('Error searching videos:', error);
             throw error;
         }
     },
 
-    getVideoDetails: async function,
+    /**
+     * Get detailed information about specific videos
+     * @param {Array} videoIds - Array of video Ids
+     */
+    getVideoDetails: async function (videoIds) {
+        try {
+            if (!videoIds.length) return [];
 
-    generateQueriesForDate:,
+            //Build URL with parameters
+            const url = new URL(`${this.BASE_URL}/videos`);
+            url.searchParams.append('part', 'snippet,statistics,contentDetails');
+            url.searchParams.append('id', videoIds.join(','));
+            url.searchParams.append('key', this.API_KEY);
 
-    searchVideoByDate:
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error.message);
+            }
+            return data.items || [];
+
+        } catch (error) {
+            console.error('Error getting video details:', error);
+            throw error;
+        }
+    },
+
+    generateQueriesForDate: async function (date) { },
+
+    /**
+     * 
+     * @param {Date} date - the date to search
+     */
+    searchVideoByDate: async function (date) { 
+        try {
+            
+        } catch (error) {
+            
+        }
     }
+}
