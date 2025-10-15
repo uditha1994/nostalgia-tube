@@ -15,8 +15,8 @@ const YouTubeAPI = {
      */
     searchVideos: async function (query, publishedAfter, publishedBefore) {
         try {
-            const afterDate = publishedAfter;
-            const beforeDate = publishedBefore;
+            const afterDate = DateUtils.formatDateISO(publishedAfter);
+            const beforeDate = DateUtils.formatDateISO(publishedBefore);
 
             //Build URL with query parameters
             const url = new URL(`${this.BASE_URL}/search`);
@@ -70,11 +70,19 @@ const YouTubeAPI = {
         }
     },
 
-    // generateQueriesForDate: async function (date) {
-    //     return {
-    //         music: `top songs `
-    //     }
-    //  },
+    /**
+     * Generate search queries based on date
+     * @param {Date} date - The date to gerate queries
+     * @returns {Object} - object containing different qury categories
+     */
+    generateQueriesForDate: async function (date) {
+        const formattedDate = DateUtils.formatDateForQuery(date);
+        return {
+            music: `top songs ${formattedDate}`,
+            viral: `viral videos ${formattedDate}`,
+            trailers: `movie trailers ${formattedDate}`
+        };
+    },
 
     /**
      * Search for videos across multiple categories for a 
@@ -83,8 +91,8 @@ const YouTubeAPI = {
      */
     searchVideoByDate: async function (date) {
         try {
-            const dateRange = date;
-            const queries = date;
+            const dateRange = DateUtils.getMonthRange(date);
+            const queries = this.generateQueriesForDate(date);
 
             const searchPromises = Object.entries(queries)
                 .map(async ([category, query]) => {

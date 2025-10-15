@@ -29,7 +29,7 @@ const DateUtils = {
      * @param {Date} date - the date to get month range
      * @returns {Object} Object containing start and end dates
      */
-    getMonthRage: function (date) {
+    getMonthRange: function (date) {
         const year = date.getFullYear();
         const month = date.getMonth();
 
