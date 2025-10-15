@@ -33,7 +33,7 @@ const UI = {
         //add event 
         this.elements.generateBtn.addEventListener('click', this.handleGenerateClick.bind(this));
         this.elements.backBtn.addEventListener
-        ('click', this.handleBackClick.bind(this));
+            ('click', this.handleBackClick.bind(this));
     },
 
     /**
@@ -95,6 +95,10 @@ const UI = {
         card.dataset.videoId = video.id;
         card.dataset.category = video.category || 'all';
 
+        const videoCount = video.statistics ?
+            parseInt(video.statistics.viewCount) : 0;
+        const formattedViews = this.formatViewCount(videoCount);
+
         card.innerHTML = `
             <div class="video-thumbnail">
                 <img src="${video.snippet.thumbnails.high.url}" 
@@ -104,12 +108,27 @@ const UI = {
                 <h3 class="video-title">${video.snippet.title}</h3>
                 <div class="video-meta">
                     <span class="video-channel">${video.snippet.channelTitle}</span>
-                    <span class="video-views">${video.statistics.viewCount}</span>
+                    <span class="video-views">${formattedViews}</span>
                 </div>
             </div>
         `;
 
+        //add click event to play video
+        card.addEventListener('click', () => {
+            this.openVideoModal(video.id);
+        });
+
         return card;
+    },
+
+    formatViewCount: function (count) {
+        if (count >= 1000000) {
+            return Math.floor(count / 1000000) + 'M';
+        } else if (count >= 1000) {
+            return Math.floor(count / 1000) + 'K';
+        } else {
+            return count.toString();
+        }
     },
 
     handleBackClick: function () {
