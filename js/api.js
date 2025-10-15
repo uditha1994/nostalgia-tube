@@ -70,17 +70,47 @@ const YouTubeAPI = {
         }
     },
 
-    generateQueriesForDate: async function (date) { },
+    // generateQueriesForDate: async function (date) {
+    //     return {
+    //         music: `top songs `
+    //     }
+    //  },
 
     /**
-     * 
+     * Search for videos across multiple categories for a 
+     * specific date
      * @param {Date} date - the date to search
      */
-    searchVideoByDate: async function (date) { 
+    searchVideoByDate: async function (date) {
         try {
-            
+            const dateRange = date;
+            const queries = date;
+
+            const searchPromises = Object.entries(queries)
+                .map(async ([category, query]) => {
+                    const results = await this.searchVideos
+                        (query, dateRange.start, dateRange.end);
+
+                    const videoIds = results.map(item => item.id.videoId);
+
+                    //get detailed information about videos
+                    let videoDetails = [];
+                    if (videoIds.length > 0) {
+                        videoDetails = await this.getVideoDetails(videoIds);
+                    }
+
+                    //add category to each video
+                    return videoDetails.map(video => ({
+                        ...video,
+                        category
+                    }));
+                });
+            const results = await Promise.all(searchPromises);
+
+            return results;
         } catch (error) {
-            
+            console.error('Error searching videos by date:', error);
+            throw error;
         }
     }
 }

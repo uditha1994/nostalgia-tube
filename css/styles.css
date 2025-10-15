@@ -97,3 +97,11 @@ header {
 .date-picker-container {
     width: 55%;
 }
+
+.loading-container{
+    display: none;
+}
+
+.no-results{
+    display: none;
+}
