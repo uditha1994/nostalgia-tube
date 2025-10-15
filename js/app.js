@@ -12,7 +12,7 @@ const App = {
         console.log('initialize nostalgia tube....')
     },
 
-    fetchVideosForDate: async function (date) { 
+    fetchVideosForDate: async function (date) {
         try {
             //to fetch videos use YoutubeAPI from api.js 
             const videos = await YouTubeAPI.searchVideoByDate(date);
@@ -22,7 +22,7 @@ const App = {
 
             //Display videos in UI
             UI.displayVideos(videos);
-            
+
         } catch (error) {
             console.error('Error fetching videos:', error);
             UI.elements.noResults.style.display = 'block';

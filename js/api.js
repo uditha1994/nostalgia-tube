@@ -21,7 +21,7 @@ const YouTubeAPI = {
             //Build URL with query parameters
             const url = new URL(`${this.BASE_URL}/search`);
             url.searchParams.append('part', 'snippet');
-            url.searchParams.append('maxResult', '10');
+            url.searchParams.append('maxResults', '10');
             url.searchParams.append('q', query);
             url.searchParams.append('type', 'video');
             url.searchParams.append('publishedAfter', afterDate);
@@ -75,7 +75,7 @@ const YouTubeAPI = {
      * @param {Date} date - The date to gerate queries
      * @returns {Object} - object containing different qury categories
      */
-    generateQueriesForDate: async function (date) {
+    generateQueriesForDate: function (date) {
         const formattedDate = DateUtils.formatDateForQuery(date);
         return {
             music: `top songs ${formattedDate}`,
@@ -115,7 +115,8 @@ const YouTubeAPI = {
                 });
             const results = await Promise.all(searchPromises);
 
-            return results;
+            //single array of videos
+            return results.flat();
         } catch (error) {
             console.error('Error searching videos by date:', error);
             throw error;

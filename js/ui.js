@@ -32,6 +32,8 @@ const UI = {
 
         //add event 
         this.elements.generateBtn.addEventListener('click', this.handleGenerateClick.bind(this));
+        this.elements.backBtn.addEventListener
+        ('click', this.handleBackClick.bind(this));
     },
 
     /**
@@ -95,7 +97,7 @@ const UI = {
 
         card.innerHTML = `
             <div class="video-thumbnail">
-                <img src="${video.snippet.thumbnail.high.url}" 
+                <img src="${video.snippet.thumbnails.high.url}" 
                 alt="${video.snippet.title}"> 
             </div>
             <div class="video-info">
@@ -108,5 +110,11 @@ const UI = {
         `;
 
         return card;
+    },
+
+    handleBackClick: function () {
+        this.elements.resultsSection.style.display = 'none';
+        this.elements.timesection.style.display = 'block';
+        this.elements.videosGrid.innerHTML = '';
     }
 }
