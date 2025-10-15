@@ -34,6 +34,12 @@ const UI = {
         this.elements.generateBtn.addEventListener('click', this.handleGenerateClick.bind(this));
         this.elements.backBtn.addEventListener
             ('click', this.handleBackClick.bind(this));
+
+        //filter btn events
+        this.elements.filterBtns.forEach(btn => {
+            btn.addEventListener('click',
+                this.handleFilterClick.bind(this));
+        });
     },
 
     /**
@@ -129,6 +135,35 @@ const UI = {
         } else {
             return count.toString();
         }
+    },
+
+    openVideoModal: function (videoId) {
+
+    },
+
+    handleFilterClick: function (event) {
+        const filterBtn = event.target;
+        const filter = filterBtn.dataset.filter;
+
+        this.elements.filterBtns.forEach(btn => {
+            btn.classList.remove('active');
+        });
+        filterBtn.classList.add('active');
+
+        this.filterVideos(filter);
+    },
+
+    filterVideos: function (filter) {
+        const videoCards = this.elements.videosGrid.
+            querySelectorAll('.video-card');
+
+        videoCards.forEach(card => {
+            if (filter === 'all' || card.dataset.category === filter) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
     },
 
     handleBackClick: function () {
