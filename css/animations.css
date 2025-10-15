@@ -1,0 +1,186 @@
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* Applied Animations */
+.app-container {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.time-machine-container {
+    animation: slideUp 0.8s ease-out;
+}
+
+.time-machine-img {
+    animation: pulse 3s infinite ease-in-out;
+}
+
+.loading-icon {
+    animation: spin 1.5s infinite linear;
+}
+
+.video-card {
+    animation: slideUp 0.5s ease-out;
+    animation-fill-mode: both;
+}
+
+/* Staggered animation for video cards */
+.videos-grid .video-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.videos-grid .video-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.videos-grid .video-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.videos-grid .video-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.videos-grid .video-card:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.videos-grid .video-card:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+.videos-grid .video-card:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+.videos-grid .video-card:nth-child(8) {
+    animation-delay: 0.8s;
+}
+
+/* Loading placeholder animation */
+.placeholder {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+}
+
+/* Transition effects */
+.results-section {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.results-section.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.video-modal {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    animation: slideUp 0.4s ease-out;
+}
+
+/* Button hover animations */
+.generate-btn .btn-icon {
+    transition: transform 0.3s ease;
+}
+
+.generate-btn:hover .btn-icon {
+    transform: translateX(5px);
+}
+
+.back-btn .btn-icon {
+    transition: transform 0.3s ease;
+}
+
+.back-btn:hover .btn-icon {
+    transform: translateX(-5px);
+}
+
+/* Filter button transitions */
+.filter-btn {
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.filter-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Video card hover effect */
+.video-thumbnail::after {
+    content: "▶";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.video-card:hover .video-thumbnail::after {
+    opacity: 1;
+}

@@ -3,7 +3,7 @@
  */
 const UI = {
     /**
-     * DOM element 
+     * DOM elements 
      */
     elements: {
         datePicker: document.getElementById('date-picker'),
@@ -11,11 +11,11 @@ const UI = {
         resultsSection: document.getElementById('results-section'),
         videosGrid: document.getElementById('videos-grid'),
         selectedDateDisplay: document.getElementById('selected-date-display'),
-        lodingContainer: document.getElementById('loading-container'),
+        loadingContainer: document.getElementById('loading-container'),
         noResults: document.getElementById('no-results'),
         backBtn: document.getElementById('back-btn'),
         filterBtns: document.querySelectorAll('.filter-btn'),
-        timesection: document.querySelector('.time-machine-section'),
+        timeSection: document.querySelector('.time-machine-section'),
         videoModal: document.getElementById('videoModal'),
         videoContainer: document.getElementById('video-container'),
         closeModalBtn: document.getElementById('close-modal-btn')
@@ -25,28 +25,25 @@ const UI = {
      * Initialize UI event listeners
      */
     init: function () {
-        //set date picker linit
+        // Set date picker limit
         const today = new Date();
         this.elements.datePicker.max = today.toISOString().split('T')[0];
 
-        //set default date 
+        // Set default date 
         today.setFullYear(today.getFullYear() - 10);
         this.elements.datePicker.value = today.toISOString().split('T')[0];
 
-        //add event 
+        // Add events 
         this.elements.generateBtn.addEventListener('click', this.handleGenerateClick.bind(this));
-        this.elements.backBtn.addEventListener
-            ('click', this.handleBackClick.bind(this));
+        this.elements.backBtn.addEventListener('click', this.handleBackClick.bind(this));
 
-        //filter btn events
+        // Filter btn events
         this.elements.filterBtns.forEach(btn => {
-            btn.addEventListener('click',
-                this.handleFilterClick.bind(this));
+            btn.addEventListener('click', this.handleFilterClick.bind(this));
         });
 
         if (this.elements.closeModalBtn) {
-            this.elements.closeModalBtn.addEventListener('click',
-                this.closeVideoModal.bind(this));
+            this.elements.closeModalBtn.addEventListener('click', this.closeVideoModal.bind(this));
         }
     },
 
@@ -57,7 +54,7 @@ const UI = {
         const dateValue = this.elements.datePicker.value;
 
         if (!dateValue) {
-            console.log('please select a date');
+            alert('Please select a date');
             return;
         }
 
@@ -66,7 +63,7 @@ const UI = {
         this.showLoading();
         this.elements.selectedDateDisplay.textContent = this.formatDate(selectedDate);
 
-        //call the function to fetch videos
+        // Call the function to fetch videos
         App.fetchVideosForDate(selectedDate);
     },
 
@@ -76,15 +73,16 @@ const UI = {
     },
 
     showLoading: function () {
-        this.elements.lodingContainer.style.display = 'flex';
-        this.elements.resultsSection.style.display = 'flex';
-        this.elements.timesection.style.display = 'none';
-        this.elements.videosGrid.style.display = 'none';
+        this.elements.resultsSection.classList.remove('hidden');
+        this.elements.timeSection.classList.add('hidden');
+        this.elements.loadingContainer.classList.remove('hidden');
+        this.elements.videosGrid.classList.add('hidden');
+        this.elements.noResults.classList.add('hidden');
     },
 
     hideLoading: function () {
-        this.elements.lodingContainer.style.display = 'none';
-        this.elements.videosGrid.style.display = 'grid';
+        this.elements.loadingContainer.classList.add('hidden');
+        this.elements.videosGrid.classList.remove('hidden');
     },
 
     displayVideos: function (videos) {
@@ -92,10 +90,11 @@ const UI = {
         this.elements.videosGrid.innerHTML = '';
 
         if (!videos || videos.length === 0) {
-            this.elements.noResults.style.display = 'block';
+            this.elements.noResults.classList.remove('hidden');
+            return;
         }
 
-        this.elements.noResults.style.display = 'none';
+        this.elements.noResults.classList.add('hidden');
 
         videos.forEach(video => {
             const videoCard = this.createVideoCard(video);
@@ -109,9 +108,9 @@ const UI = {
         card.dataset.videoId = video.id;
         card.dataset.category = video.category || 'all';
 
-        const videoCount = video.statistics ?
+        const viewCount = video.statistics ?
             parseInt(video.statistics.viewCount) : 0;
-        const formattedViews = this.formatViewCount(videoCount);
+        const formattedViews = this.formatViewCount(viewCount);
 
         card.innerHTML = `
             <div class="video-thumbnail">
@@ -122,12 +121,12 @@ const UI = {
                 <h3 class="video-title">${video.snippet.title}</h3>
                 <div class="video-meta">
                     <span class="video-channel">${video.snippet.channelTitle}</span>
-                    <span class="video-views">${formattedViews}</span>
+                    <span class="video-views">👁️ ${formattedViews}</span>
                 </div>
             </div>
         `;
 
-        //add click event to play video
+        // Add click event to play video
         card.addEventListener('click', () => {
             this.openVideoModal(video.id);
         });
@@ -146,8 +145,10 @@ const UI = {
     },
 
     openVideoModal: function (videoId) {
-        alert('ok');
-        if (!this.elements.videoModal) return;
+        if (!this.elements.videoModal) {
+            console.error('Video modal element not found');
+            return;
+        }
 
         this.elements.videoContainer.innerHTML = `
             <iframe
@@ -161,14 +162,19 @@ const UI = {
             >
             </iframe>
         `;
-        this.elements.videoModal.style.display = 'flex';
+        this.elements.videoModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
     },
 
     closeVideoModal: function () {
-        if (!this.elements.videoModal) return;
+        if (!this.elements.videoModal) {
+            console.error('Video modal element not found');
+            return;
+        }
 
-        this.elements.videoModal.style.display = 'none';
+        this.elements.videoModal.classList.add('hidden');
         this.elements.videoContainer.innerHTML = '';
+        document.body.style.overflow = ''; // Restore scrolling
     },
 
     handleFilterClick: function (event) {
@@ -184,8 +190,7 @@ const UI = {
     },
 
     filterVideos: function (filter) {
-        const videoCards = this.elements.videosGrid.
-            querySelectorAll('.video-card');
+        const videoCards = this.elements.videosGrid.querySelectorAll('.video-card');
 
         videoCards.forEach(card => {
             if (filter === 'all' || card.dataset.category === filter) {
@@ -197,18 +202,18 @@ const UI = {
     },
 
     handleBackClick: function () {
-        this.elements.resultsSection.style.display = 'none';
-        this.elements.timesection.style.display = 'block';
+        this.elements.resultsSection.classList.add('hidden');
+        this.elements.timeSection.classList.remove('hidden');
         this.elements.videosGrid.innerHTML = '';
         this.resetFilters();
     },
 
     resetFilters: function () {
-        this.filterBtns.forEach(btn => {
+        this.elements.filterBtns.forEach(btn => { // Fixed reference here
             btn.classList.remove('active');
             if (btn.dataset.filter === 'all') {
                 btn.classList.add('active');
             }
         });
     }
-}
+};

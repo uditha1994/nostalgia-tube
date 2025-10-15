@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
@@ -47,7 +51,7 @@
                         <span id="selected-date-display"></span>
                     </h2>
                     <div class="filter-controls">
-                        <button class="filter-btn" data-filter="all">All</button>
+                        <button class="filter-btn active" data-filter="all">All</button>
                         <button class="filter-btn" data-filter="music">Music</button>
                         <button class="filter-btn" data-filter="viral">Viral</button>
                         <button class="filter-btn" data-filter="trailers">Trailers</button>
@@ -61,7 +65,7 @@
 
                 <div class="videos-grid" id="videos-grid"></div>
 
-                <div class="no-results" id="no-results">
+                <div class="no-results hidden" id="no-results">
                     <p>No videos found this time period. Try another date!</p>
                 </div>
 
@@ -72,7 +76,7 @@
             </section>
         </main>
 
-        <div class="video-modal" id="videoModal">
+        <div class="video-modal hidden" id="videoModal">
             <div class="modal-content">
                 <button class="close-modal-btn" id="close-modal-btn">x</button>
                 <div class="video-container" id="video-container"></div>
