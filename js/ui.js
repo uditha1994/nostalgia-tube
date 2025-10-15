@@ -15,7 +15,10 @@ const UI = {
         noResults: document.getElementById('no-results'),
         backBtn: document.getElementById('back-btn'),
         filterBtns: document.querySelectorAll('.filter-btn'),
-        timesection: document.querySelector('.time-machine-section')
+        timesection: document.querySelector('.time-machine-section'),
+        videoModal: document.getElementById('videoModal'),
+        videoContainer: document.getElementById('video-container'),
+        closeModalBtn: document.getElementById('close-modal-btn')
     },
 
     /**
@@ -40,6 +43,11 @@ const UI = {
             btn.addEventListener('click',
                 this.handleFilterClick.bind(this));
         });
+
+        if (this.elements.closeModalBtn) {
+            this.elements.closeModalBtn.addEventListener('click',
+                this.closeVideoModal.bind(this));
+        }
     },
 
     /**
@@ -138,7 +146,29 @@ const UI = {
     },
 
     openVideoModal: function (videoId) {
+        alert('ok');
+        if (!this.elements.videoModal) return;
 
+        this.elements.videoContainer.innerHTML = `
+            <iframe
+                width="100%" height="100%"
+                src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+                title="NostalgiaTube Player"
+                frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media;
+                picture-in-picture"
+                allowfullscreen
+            >
+            </iframe>
+        `;
+        this.elements.videoModal.style.display = 'flex';
+    },
+
+    closeVideoModal: function () {
+        if (!this.elements.videoModal) return;
+
+        this.elements.videoModal.style.display = 'none';
+        this.elements.videoContainer.innerHTML = '';
     },
 
     handleFilterClick: function (event) {
@@ -170,5 +200,15 @@ const UI = {
         this.elements.resultsSection.style.display = 'none';
         this.elements.timesection.style.display = 'block';
         this.elements.videosGrid.innerHTML = '';
+        this.resetFilters();
+    },
+
+    resetFilters: function () {
+        this.filterBtns.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.filter === 'all') {
+                btn.classList.add('active');
+            }
+        });
     }
 }
